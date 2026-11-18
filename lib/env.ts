@@ -1,0 +1,44 @@
+import { z } from "zod";
+
+const isProd = process.env.NODE_ENV === "production";
+
+const envSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  DIRECT_URL: z.string().url().optional(), // Used for migrations if pooling
+  
+  NEXTAUTH_SECRET: isProd 
+    ? z.string().min(32) 
+    : z.string().min(1).default("dev-secret"),
+    
+  ENCRYPTION_KEY: isProd 
+    ? z.string().length(64, "AES-256 keys must be exactly 32 bytes (64 hex characters)") 
+    : z.string().min(1).default("development_fallback_key_do_not_use_in_prod"),
+    
+  CRON_SECRET: isProd 
+    ? z.string().min(16, "Cron secret must be secure") 
+    : z.string().optional().default("dev-cron-secret"),
+
+  UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  
+  NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
+  
+  RESEND_API_KEY: z.string().optional(),
+
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_ANON_KEY: z.string().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
+
+  NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+  SENTRY_AUTH_TOKEN: z.string().optional(),
+});
+
+const _env = envSchema.safeParse(process.env);
+
+if (!_env.success) {
+  const issues = _env.error.issues.map(i => `  ${i.path.join(".")}: ${i.message}`).join("\n");
+  console.error(`❌ Invalid environment variables:\n${issues}`);
+  throw new Error(`Invalid environment variables:\n${issues}`);
+}
+
+export const env = _env.data;
