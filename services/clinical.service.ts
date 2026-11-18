@@ -72,7 +72,7 @@ export async function getPatientTimeline(counsellorUserId: string, patientProfil
 
   const appointments = patientProfile?.userId ? await prisma.appointment.findMany({
     where: { studentId: patientProfile.userId },
-    select: { id: true, status: true, startTime: true, meetingLink: true, createdAt: true },
+    select: { id: true, status: true, startTime: true, jitsiRoom: true, createdAt: true },
     orderBy: { startTime: "desc" }
   }) : [];
 
@@ -106,7 +106,7 @@ export async function getPatientTimeline(counsellorUserId: string, patientProfil
       timestamp: a.startTime.toISOString(),
       data: {
         status: a.status,
-        meetingLink: a.meetingLink
+        meetingLink: a.jitsiRoom
       }
     }))
   ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());

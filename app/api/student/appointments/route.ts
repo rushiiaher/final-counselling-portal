@@ -7,13 +7,11 @@ export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) return NextResponse.json([], { status: 401 });
 
-  const profile = await prisma.studentProfile.findUnique({ where: { userId: session.user.id } });
-  if (!profile) return NextResponse.json([]);
-
+  // Appointment.studentId / counsellorId reference User ids
   const appointments = await prisma.appointment.findMany({
-    where: { studentId: profile.id },
+    where: { studentId: session.user.id, deletedAt: null },
     include: {
-      counsellor: { include: { user: { select: { name: true } } } }
+      counsellor: { select: { name: true } },
     },
     orderBy: { startTime: "desc" },
   });
@@ -24,6 +22,6 @@ export async function GET() {
     endTime: a.endTime.toISOString(),
     mode: a.mode,
     status: a.status,
-    counsellorName: a.counsellor.user.name,
+    counsellorName: a.counsellor?.name ?? null,
   })));
 }

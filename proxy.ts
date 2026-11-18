@@ -28,7 +28,8 @@ export async function proxy(req: NextRequest) {
   const requestStartTime = Date.now();
 
   // 1. Distributed Rate Limiting
-  const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
+  // On Vercel the first x-forwarded-for entry is the visitor's real IP
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
   const now = Date.now();
   const windowMs = 60 * 1000; // 1 minute window
   const maxRequests = req.nextUrl.pathname.startsWith('/api') ? 30 : 60;

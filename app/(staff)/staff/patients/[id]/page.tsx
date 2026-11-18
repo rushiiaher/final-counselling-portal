@@ -11,7 +11,13 @@ export default async function PatientWorkspacePage({ params }: { params: Promise
   const { id } = await params;
   
   // This function securely checks access assignment and audits the view
-  const timeline = await getPatientTimeline(session.id, id);
+  const events = await getPatientTimeline(session.id, id);
+  // Clinical history shows the notes; fields live under `data`, time under `timestamp`
+  const timeline = events.flatMap((e) =>
+    e.type === "NOTE"
+      ? [{ id: e.id, createdAt: e.timestamp, noteType: e.data.noteType, editedAt: e.data.editedAt, content: e.data.content, requiresElevatedAccess: e.data.elevated }]
+      : []
+  );
 
   return (
     <PageContainer>

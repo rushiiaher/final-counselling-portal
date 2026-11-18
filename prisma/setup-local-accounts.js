@@ -1,6 +1,11 @@
-/* Creates (or refreshes) the local login accounts for development.
-   Run:  node prisma/setup-local-accounts.js
-   Safe to run again — existing accounts are updated, not duplicated.
+/* Creates the portal's login accounts.
+
+   LOCAL DEVELOPMENT (simple test passwords, includes a test student):
+     node prisma/setup-local-accounts.js
+
+   PRODUCTION (e.g. your Vercel database) — passwords come from you, no test student,
+   and existing accounts are never overwritten:
+     DATABASE_URL="..." DIRECT_URL="..." ADMIN_EMAIL="you@gov.in"      ADMIN_PASSWORD="<strong password>" COUNSELLOR_PASSWORD="<strong password>"      node prisma/setup-local-accounts.js --production
 
    Includes the 8 counsellors listed on the website's "Find Counsellor" page
    (app/counselors/page.tsx) so students can book them in the student app. */
@@ -10,12 +15,25 @@ const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
 
-const COUNSELLOR_PASSWORD = "counsellor123";
+const PRODUCTION = process.argv.includes("--production");
 
-const ACCOUNTS = [
-  { role: "ADMIN", name: "District Admin", email: "admin@dyedc-anantnag.gov.in", password: "admin123" },
-  { role: "STUDENT", name: "Insha Jan", email: "student@dyedc-anantnag.gov.in", password: "student123" },
-];
+if (PRODUCTION) {
+  const weak = ["ADMIN_PASSWORD", "COUNSELLOR_PASSWORD"].filter((k) => (process.env[k] || "").length < 10);
+  if (weak.length) {
+    console.error(`Production mode needs strong passwords (10+ characters) in: ${weak.join(", ")}`);
+    process.exit(1);
+  }
+}
+
+const COUNSELLOR_PASSWORD = PRODUCTION ? process.env.COUNSELLOR_PASSWORD : "counsellor123";
+
+const ACCOUNTS = PRODUCTION
+  ? [{ role: "ADMIN", name: "District Admin", email: process.env.ADMIN_EMAIL || "admin@dyedc-anantnag.gov.in", password: process.env.ADMIN_PASSWORD }]
+  : [
+      { role: "ADMIN", name: "District Admin", email: "admin@dyedc-anantnag.gov.in", password: "admin123" },
+      { role: "STUDENT", name: "Insha Jan", email: "student@dyedc-anantnag.gov.in", password: "student123" },
+    ];
+const shown = (pw) => (PRODUCTION ? "(password you provided)" : pw);
 
 /* Website specialisations → portal service categories */
 const SPEC_TO_CATEGORY = {
@@ -58,6 +76,11 @@ const COUNSELLORS = [
 async function upsertUser(a) {
   const password = await bcrypt.hash(a.password, 12);
   const now = new Date();
+  if (PRODUCTION) {
+    // never reset an existing live account's password
+    const existing = await prisma.user.findUnique({ where: { email: a.email } });
+    if (existing) return existing;
+  }
   return prisma.user.upsert({
     where: { email: a.email },
     update: { name: a.name, password, role: a.role, isActive: true, profileCompleted: true },
@@ -81,7 +104,7 @@ async function main() {
         create: { userId: user.id, firstName: "Insha", lastName: "Jan", ageRange: "16-18", district: "Anantnag", grade: "Class 12" },
       });
     }
-    console.log(`${a.role.padEnd(10)} ${a.email}  /  ${a.password}`);
+    console.log(`${a.role.padEnd(10)} ${a.email}  /  ${shown(a.password)}`);
   }
 
   for (const c of COUNSELLORS) {
@@ -114,7 +137,7 @@ async function main() {
         ),
       });
     }
-    console.log(`COUNSELLOR ${c.email.padEnd(38)} /  ${COUNSELLOR_PASSWORD}   (${c.name}, ${c.availability})`);
+    console.log(`COUNSELLOR ${c.email.padEnd(38)} /  ${shown(COUNSELLOR_PASSWORD)}   (${c.name}, ${c.availability})`);
   }
 }
 

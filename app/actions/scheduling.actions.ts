@@ -41,12 +41,12 @@ export async function cancelAppointmentAction(appointmentId: string) {
 
     const apt = await prisma.appointment.findUnique({
       where: { id: appointmentId },
-      include: { student: { select: { userId: true } } }
+      select: { id: true, studentId: true, status: true },
     });
 
     if (!apt) return { success: false, error: "Not found" };
 
-    const isStudent = apt.student.userId === session.id;
+    const isStudent = apt.studentId === session.id;
     const isCounsellor = session.role === "COUNSELLOR" || session.role === "ADMIN";
     if (!isStudent && !isCounsellor) return { success: false, error: "Unauthorized" };
 

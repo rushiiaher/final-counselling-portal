@@ -53,3 +53,6 @@ __v0_jsx-dev-runtime.ts
 # any other local env copies (keep the template)
 .env.*
 !.env.example
+
+# typescript build cache
+*.tsbuildinfo
