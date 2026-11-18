@@ -35,10 +35,18 @@ const envSchema = z.object({
 
 const _env = envSchema.safeParse(process.env);
 
+// During `next build` (incl. Vercel preview builds) secrets may not be present yet —
+// they are only needed when the site runs. Warn at build time, fail at runtime.
+const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+
 if (!_env.success) {
   const issues = _env.error.issues.map(i => `  ${i.path.join(".")}: ${i.message}`).join("\n");
-  console.error(`❌ Invalid environment variables:\n${issues}`);
-  throw new Error(`Invalid environment variables:\n${issues}`);
+  if (isBuildPhase) {
+    console.warn(`⚠ Environment variables missing at build time (required at runtime):\n${issues}`);
+  } else {
+    console.error(`❌ Invalid environment variables:\n${issues}`);
+    throw new Error(`Invalid environment variables:\n${issues}`);
+  }
 }
 
-export const env = _env.data;
+export const env = (_env.success ? _env.data : (process.env as unknown)) as z.infer<typeof envSchema>;

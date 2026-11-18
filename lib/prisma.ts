@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { env } from "./env";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -12,11 +11,10 @@ const logLevels: any = process.env.NODE_ENV === "development" || process.env.LOG
 
 export const prisma =
   globalForPrisma.prisma ??
+  // The connection string comes from DATABASE_URL via prisma/schema.prisma.
+  // Prisma connects lazily on the first query, so builds work without a database.
   new PrismaClient({
     log: logLevels,
-    datasources: {
-      db: { url: env.DATABASE_URL }
-    }
   });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

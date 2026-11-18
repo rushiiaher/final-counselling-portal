@@ -102,8 +102,8 @@
   --shadow-xl: 0 18px 40px rgb(11 47 107 / 0.16);
 
   /* Fonts (loaded with next/font in app/layout.tsx) */
-  --font-sans: var(--font-inter), var(--font-devanagari), var(--font-naskh), system-ui, sans-serif;
-  --font-display: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-inter), var(--font-inter-ext), var(--font-devanagari), var(--font-naskh), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-jakarta-ext), var(--font-inter), var(--font-inter-ext), system-ui, sans-serif;
   --font-hindi: var(--font-devanagari), var(--font-inter), sans-serif;
   --font-urdu: var(--font-naskh), var(--font-inter), serif;
 
