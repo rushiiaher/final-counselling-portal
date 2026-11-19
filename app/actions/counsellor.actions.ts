@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import bcrypt from "bcryptjs";
@@ -61,7 +63,7 @@ export async function createCounsellorAction(data: {
     revalidatePath("/admin/counsellors");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -96,7 +98,7 @@ export async function updateCounsellorProfileAction(
     revalidatePath(`/admin/counsellors/${counsellorProfileId}`);
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -120,6 +122,6 @@ export async function getCounsellorDetailAction(counsellorProfileId: string) {
     if (!c) return { success: false, error: "Not found" };
     return { success: true, data: c };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

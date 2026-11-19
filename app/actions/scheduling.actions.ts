@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { requireAuth } from "@/lib/auth/session";
 import { generateSlots, bookAppointmentTransaction } from "@/services/scheduling.service";
 import { SessionMode } from "@prisma/client";
@@ -31,7 +33,7 @@ export async function bookSlotAction(data: { counsellorId: string, startTime: st
 
     return { success: true, id: appointment.id };
   } catch (error: any) {
-    return { success: false, error: error.message || "Failed to book slot" };
+    return { success: false, error: userErrorMessage(error, "Failed to book slot") };
   }
 }
 
@@ -63,6 +65,6 @@ export async function cancelAppointmentAction(appointmentId: string) {
 
     return { success: true };
   } catch (error: any) {
-    return { success: false, error: error.message || "Failed to cancel" };
+    return { success: false, error: userErrorMessage(error, "Failed to cancel") };
   }
 }

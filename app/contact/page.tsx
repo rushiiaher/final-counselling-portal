@@ -240,7 +240,7 @@ export default function ContactPage() {
               <div className="bg-tint rounded-[16px] p-5">
                 <p className="text-navy text-sm font-bold mb-1">Book an Appointment</p>
                 <p className="text-navy/80 text-[13px] leading-relaxed">For counselling sessions, we recommend booking in advance. Walk-ins are accepted subject to counsellor availability.</p>
-                <Link href="/student/talk" className="btn btn-saffron btn-sm mt-3">Book a session</Link>
+                <Link href="/student/dashboard" className="btn btn-saffron btn-sm mt-3">Book a session</Link>
               </div>
 
             </div>

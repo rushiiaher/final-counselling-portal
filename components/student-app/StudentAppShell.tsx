@@ -10,7 +10,6 @@ import { signOut, useSession } from "next-auth/react";
 import { StudentAppProvider, useStudentApp } from "./AppContext";
 import { THEME, Icon, Sheet, Btn, Chip } from "./ui";
 import { AICounselor, MentorBooking } from "./features";
-import { NSP_URL } from "@/lib/student-app/data";
 import { materialSymbols } from "./iconFont";
 
 const T = THEME;
@@ -19,7 +18,7 @@ const TABS = [
   { id: "home", icon: "home", href: "/student/dashboard", labelKey: "home" },
   { id: "careers", icon: "explore", href: "/student/careers", labelKey: "careers" },
   { id: "counsel", icon: "diversity_3", href: "/student/sessions", labelKey: "talk" },
-  { id: "scholar", icon: "school", href: "/student/scholarships", labelKey: "scholar" },
+  { id: "exams", icon: "emoji_events", href: "/student/exams", labelKey: "exams" },
   { id: "more", icon: "grid_view", href: "/student/more", labelKey: "more" },
 ];
 
@@ -32,9 +31,7 @@ function routeInfo(pathname: string): { tab: string; titleKey?: string; title?: 
     case "dashboard": return { tab: "home", root: true };
     case "careers": return { tab: "careers", titleKey: "careersTitle", root: !b };
     case "roadmap": return { tab: "careers", titleKey: "roadmapGen", root: false };
-    case "scholarships": return { tab: "scholar", titleKey: "scholarTitle", root: true };
-    case "eligibility": return { tab: "scholar", titleKey: "eligibilityChecker", root: false };
-    case "exams": return { tab: "home", titleKey: "examTitle", root: false };
+    case "exams": return { tab: "exams", titleKey: "examTitle", root: !b };
     case "skills": return { tab: "more", titleKey: "skillsTitle", root: false };
     case "schemes": return { tab: "more", titleKey: "schemesTitle", root: false };
     case "mentors": return { tab: "more", titleKey: "mentorsTitle", root: false };
@@ -130,29 +127,6 @@ function BottomNav({ activeTab }: { activeTab: string }) {
   );
 }
 
-function ScholarSheet({ s }: { s: any }) {
-  const { t } = useStudentApp();
-  const row = (label: string, val: string, tone?: string) => (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "11px 0", borderBottom: `1px solid ${T.outline}`, gap: 10 }}>
-      <span style={{ font: `500 13px ${T.body}`, color: T.inkSoft }}>{label}</span>
-      <span style={{ font: `700 13.5px ${T.head}`, color: tone || T.ink, textAlign: "end", maxWidth: "62%" }}>{val}</span>
-    </div>
-  );
-  return (
-    <div>
-      <Chip tone="green" style={{ marginBottom: 8 }}>{s.amount}</Chip>
-      {row(t("amount"), s.amount, "#067a55")}
-      {row("Provider", s.provider)}
-      {row(t("deadline"), s.deadline, T.saffronDeep)}
-      <div style={{ padding: "11px 0" }}>
-        <div style={{ font: `500 13px ${T.body}`, color: T.inkSoft, marginBottom: 5 }}>{t("eligibleLabel")}</div>
-        <div style={{ font: `400 14px ${T.body}`, color: T.ink, lineHeight: 1.5 }}>{s.elig}</div>
-      </div>
-      <Btn full variant="saffron" icon="open_in_new" style={{ marginTop: 8 }} onClick={() => window.open(NSP_URL, "_blank", "noopener,noreferrer")}>{t("apply")}</Btn>
-    </div>
-  );
-}
-
 function AppScreen({ children }: { children: React.ReactNode }) {
   const { t, lang, name, nav, sheet, setSheet } = useStudentApp();
   const pathname = usePathname();
@@ -192,16 +166,12 @@ function AppScreen({ children }: { children: React.ReactNode }) {
         <div style={{ height: 460 }}><AICounselor /></div>
       </Sheet>
 
-      <Sheet open={sheet?.type === "scholar"} onClose={() => setSheet(null)} title={sheet?.type === "scholar" ? name(sheet.data) : ""}>
-        {sheet?.type === "scholar" && <ScholarSheet s={sheet.data} />}
-      </Sheet>
-
       <Sheet open={sheet?.type === "scheme"} onClose={() => setSheet(null)} title={sheet?.type === "scheme" ? name(sheet.data) : ""}>
         {sheet?.type === "scheme" && (
           <div>
             <p style={{ font: `400 14.5px ${T.body}`, color: T.ink, lineHeight: 1.6 }}>{sheet.data.desc}</p>
-            <Btn full variant="saffron" icon="support_agent" style={{ marginTop: 8 }} onClick={() => nav.go("book", { concern: "scholarship" })}>
-              Get help applying
+            <Btn full variant="saffron" icon="support_agent" style={{ marginTop: 8 }} onClick={() => nav.go("book")}>
+              Talk to a counsellor
             </Btn>
           </div>
         )}

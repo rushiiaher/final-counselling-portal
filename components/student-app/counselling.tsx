@@ -50,10 +50,10 @@ export function GuestSignIn({ title, text }: { title: string; text: string }) {
 }
 
 export function BookCounselling({
-  counsellors, anySlots = [], hasProfile, initialConcern, initialCounsellorId = null, isGuest = false, staffRole = null,
+  counsellors, anySlots = [], hasProfile, initialConcern, initialCounsellorId = null, staffRole = null,
 }: {
   counsellors: BookableCounsellor[]; anySlots?: BookSlot[]; hasProfile: boolean; initialConcern?: string | null;
-  initialCounsellorId?: string | null; isGuest?: boolean; staffRole?: string | null;
+  initialCounsellorId?: string | null; staffRole?: string | null;
 }) {
   const { nav } = useStudentApp();
   const router = useRouter();
@@ -72,15 +72,6 @@ export function BookCounselling({
       <Page>
         <SecIntro title="Talk to a counsellor" sub="Free & confidential · Anantnag center" />
         <GuestSignIn title="Sign in with a student account" text={`You're signed in as ${staffRole}. Sessions are booked from a student account — sign in as a student or create one.`} />
-      </Page>
-    );
-  }
-
-  if (isGuest) {
-    return (
-      <Page>
-        <SecIntro title="Talk to a counsellor" sub="Free & confidential · Anantnag center" />
-        <GuestSignIn title="Sign in to book a session" text="Booking is free. Sign in or create an account so your counsellor can confirm the session and follow up with you." />
       </Page>
     );
   }

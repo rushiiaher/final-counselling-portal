@@ -1,8 +1,8 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
 import { decrypt } from "@/lib/encryption";
-import { StudentChat, GuestSignIn } from "@/components/student-app/counselling";
+import { StudentChat } from "@/components/student-app/counselling";
 
 export const dynamic = "force-dynamic";
 
@@ -13,8 +13,8 @@ function safeDecrypt(s: string) {
 /* Student ↔ counsellor chat on one request (design: StudentChat) */
 export default async function StudentChatPage({ params }: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser();
-  if (!user) return <div style={{ padding: 16 }}><GuestSignIn title="Sign in to message your counsellor" text="Your conversations are private to you and your counsellor." /></div>;
   const { id } = await params;
+  if (!user) redirect(`/login?portal=student&next=${encodeURIComponent(`/student/sessions/${id}/chat`)}`);
   const profile = await prisma.studentProfile.findUnique({ where: { userId: (user as { id: string }).id }, select: { id: true } });
   if (!profile) notFound();
   const r = await prisma.supportRequest.findFirst({

@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { verifyAdminAccess } from "@/services/admin.service";
 import { createAuditLog } from "@/services/audit.service";
 import { requireAuth } from "@/lib/auth/session";
@@ -17,7 +19,7 @@ export async function toggleUserActiveAction(userId: string, isActive: boolean) 
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -31,7 +33,7 @@ export async function toggleCounsellorVerifiedAction(counsellorProfileId: string
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -49,6 +51,6 @@ export async function resolveCrisisSessionAction(sessionId: string) {
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

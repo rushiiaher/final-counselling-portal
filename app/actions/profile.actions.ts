@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { completeStudentOnboarding, acceptComplianceAndCompleteOnboarding } from "@/services/profile.service";
 import { studentOnboardingSchema, StudentOnboardingInput } from "@/lib/validations/profile.schema";
 import { requireAuth } from "@/lib/auth/session";
@@ -13,7 +15,7 @@ export async function saveStudentOnboardingAction(data: StudentOnboardingInput) 
     
     return { success: true };
   } catch (error: any) {
-    return { success: false, error: error.message || "Failed to save profile. Please check your inputs." };
+    return { success: false, error: userErrorMessage(error, "Failed to save profile. Please check your inputs.") };
   }
 }
 
@@ -23,6 +25,6 @@ export async function acceptComplianceAction() {
     await acceptComplianceAndCompleteOnboarding(session.id);
     return { success: true };
   } catch (error: any) {
-    return { success: false, error: error.message || "Failed to save consent." };
+    return { success: false, error: userErrorMessage(error, "Failed to save consent.") };
   }
 }

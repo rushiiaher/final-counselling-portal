@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { ServiceCategory, ProgramType, ProgramStatus } from "@prisma/client";
@@ -52,7 +54,7 @@ export async function createProgramAction(data: {
     revalidatePath("/student/programs");
     return { success: true, data: program };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -84,7 +86,7 @@ export async function getProgramsAction(filters?: {
 
     return { success: true, data: programs };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -109,7 +111,7 @@ export async function getProgramAction(id: string) {
     if (!program) return { success: false, error: "Program not found" };
     return { success: true, data: program };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -144,7 +146,7 @@ export async function registerForProgramAction(programId: string) {
     revalidatePath("/student/programs");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -157,7 +159,7 @@ export async function updateProgramStatusAction(id: string, status: ProgramStatu
     revalidatePath("/admin/programs");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -174,6 +176,6 @@ export async function markAttendanceAction(programId: string, studentIds: string
     revalidatePath(`/staff/programs`);
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

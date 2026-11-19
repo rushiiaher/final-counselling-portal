@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 /* Counsellor desk actions (design: desk-counsellor.jsx) backed by the real database. */
 
 import prisma from "@/lib/prisma";
@@ -41,7 +43,7 @@ async function notifyStudent(userId: string, type: "ASSIGNMENT_ACCEPTED" | "CASE
 }
 
 type Result = { success: true } | { success: false; error: string };
-const fail = (e: unknown): Result => ({ success: false, error: e instanceof Error ? e.message : "Something went wrong" });
+const fail = (e: unknown): Result => ({ success: false, error: userErrorMessage(e) });
 
 export async function acceptRequestAction(requestId: string): Promise<Result> {
   try {

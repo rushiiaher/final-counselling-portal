@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { submitAssessment } from "@/services/assessment.service";
 import { AssessmentType } from "@prisma/client";
 import { requireAuth } from "@/lib/auth/session";
@@ -26,6 +28,6 @@ export async function submitAssessmentAction(
     
     return { success: true, resultId: result.id };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

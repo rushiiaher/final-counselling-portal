@@ -10,8 +10,6 @@ export const SCREEN_PATH: Record<string, (p?: any) => string> = {
   careers: () => "/student/careers",
   careerDetail: (p) => `/student/careers/${p?.id}`,
   roadmap: (p) => `/student/roadmap${p?.preselect ? `?preselect=${p.preselect}` : ""}`,
-  scholar: () => "/student/scholarships",
-  eligibility: () => "/student/eligibility",
   exams: () => "/student/exams",
   examDetail: (p) => `/student/exams/${p?.id}`,
   skills: () => "/student/skills",
@@ -28,7 +26,6 @@ export const SCREEN_PATH: Record<string, (p?: any) => string> = {
 export type SheetState =
   | null
   | { type: "ai" }
-  | { type: "scholar"; data: any }
   | { type: "scheme"; data: any }
   | { type: "mentor"; data: any }
   | { type: "confirmed"; data: any };
@@ -42,7 +39,6 @@ type Ctx = {
     go: (screen: string, params?: any) => void;
     back: () => void;
     openAI: () => void;
-    scholarSheet: (d: any) => void;
     schemeSheet: (d: any) => void;
     mentorSheet: (d: any) => void;
   };
@@ -81,7 +77,6 @@ export function StudentAppProvider({ children }: { children: React.ReactNode }) 
         else router.push("/student/dashboard");
       },
       openAI: () => setSheet({ type: "ai" }),
-      scholarSheet: (data) => setSheet({ type: "scholar", data }),
       schemeSheet: (data) => setSheet({ type: "scheme", data }),
       mentorSheet: (data) => setSheet({ type: "mentor", data }),
     },

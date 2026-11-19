@@ -3,7 +3,7 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { createUser } from "@/services/auth.service";
-import { signupSchema, SignupInput } from "@/lib/validations/auth.schema";
+import { signupSchema, SignupInput, studentSignupSchema, StudentSignupInput } from "@/lib/validations/auth.schema";
 import prisma from "@/lib/prisma";
 import { sendEmail } from "@/providers/resend.provider";
 import { redis } from "@/lib/redis";
@@ -14,6 +14,57 @@ export async function registerAction(data: SignupInput) {
     return { success: true, message: "Registration successful. You can now log in." };
   } catch (error: any) {
     return { success: false, error: "Registration failed. Please check your details and try again." };
+  }
+}
+
+/* Student sign-up: creates the account, the student profile and the consent record together,
+   so a new student can book straight away after signing up. */
+export async function registerStudentAction(data: StudentSignupInput) {
+  const parsed = studentSignupSchema.safeParse(data);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message ?? "Please check the form and try again." };
+  }
+  const d = parsed.data;
+  try {
+    const existing = await prisma.user.findUnique({ where: { email: d.email }, select: { id: true } });
+    if (existing) {
+      return { success: false, error: "We couldn't create an account with this email. If you already have one, please log in." };
+    }
+    const password = await bcrypt.hash(d.password, 12);
+    const now = new Date();
+    const firstName = d.name.split(/\s+/)[0];
+    const lastName = d.name.split(/\s+/).slice(1).join(" ") || null;
+    await prisma.user.create({
+      data: {
+        email: d.email,
+        name: d.name,
+        password,
+        role: "STUDENT",
+        isActive: true,
+        language: d.preferredLanguage,
+        profileCompleted: true,
+        termsAcceptedAt: now,
+        privacyAcceptedAt: now,
+        clinicalConsentGivenAt: now,
+        studentProfile: {
+          create: {
+            firstName,
+            lastName,
+            ageRange: d.ageRange,
+            gender: d.gender,
+            grade: d.grade,
+            school: d.school || null,
+            district: d.district,
+            mobile: d.mobile,
+            preferredLanguage: d.preferredLanguage,
+          },
+        },
+      },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("[registerStudentAction]", error);
+    return { success: false, error: "Registration failed. Please try again in a few minutes." };
   }
 }
 

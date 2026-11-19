@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import prisma from "@/lib/prisma";
 import { BookCounselling, type BookableCounsellor } from "@/components/student-app/counselling";
@@ -13,7 +14,14 @@ const initials = (n: string) =>
 export default async function TalkPage({ searchParams }: { searchParams: Promise<{ concern?: string; counsellor?: string }> }) {
   const user = await getCurrentUser();
   const { concern, counsellor: wanted } = await searchParams;
-  if (!user) return <BookCounselling counsellors={[]} anySlots={[]} hasProfile={false} isGuest initialConcern={concern ?? null} />;
+  // Not signed in: sign in or create an account first, then come back to this booking
+  if (!user) {
+    const q = new URLSearchParams();
+    if (concern) q.set("concern", concern);
+    if (wanted) q.set("counsellor", wanted);
+    const back = `/student/talk${q.toString() ? `?${q.toString()}` : ""}`;
+    redirect(`/login?portal=student&next=${encodeURIComponent(back)}`);
+  }
   const session = user as { id: string };
 
   const [profile, account, rows] = await Promise.all([
@@ -43,7 +51,7 @@ export default async function TalkPage({ searchParams }: { searchParams: Promise
       years: c.yearsOfExperience ?? null,
       languages: c.languages,
       // counsellors without listed categories can take any concern
-      tags: tags.length ? tags : ["career", "exam", "studies", "wellbeing", "scholarship", "personal"],
+      tags: tags.length ? tags : ["career", "exam", "studies", "wellbeing", "personal"],
       slots: slots.get(c.id) ?? [],
     };
   });

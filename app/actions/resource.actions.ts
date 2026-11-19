@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { incrementHelpfulCount } from "@/services/resource.service";
 import { cookies } from "next/headers";
 
@@ -36,6 +38,6 @@ export async function createResourceAction(data: any) {
     const resource = await createResource(session.id, data);
     return { success: true, id: resource.id };
   } catch (err: any) {
-    return { success: false, error: err.message || "Failed to create resource" };
+    return { success: false, error: userErrorMessage(err, "Failed to create resource") };
   }
 }

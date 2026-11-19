@@ -13,8 +13,8 @@ const studentRoutes = ["/student"];
 
 // Student app screens anyone can open without signing in
 const PUBLIC_STUDENT_APP = [
-  "/student/dashboard", "/student/careers", "/student/roadmap", "/student/scholarships",
-  "/student/eligibility", "/student/exams", "/student/skills", "/student/schemes",
+  "/student/dashboard", "/student/careers", "/student/roadmap",
+  "/student/exams", "/student/skills", "/student/schemes",
   "/student/mentors", "/student/stories", "/student/more", "/student/about",
   "/student/talk", "/student/sessions",
 ];
@@ -93,13 +93,19 @@ export async function proxy(req: NextRequest) {
     }
   }
 
-  // The student app (careers, scholarships, exams, AI counsellor …) is open to everyone.
-  // Booking / "My sessions" pages are public too but ask guests to sign in on-page.
+  // The student app (careers, exams, skills, AI counsellor …) is open to everyone.
   const publicStudentApp = isPublicStudentPath(pathname);
 
+  // Booking a counsellor and opening a session / its chat need a student account:
+  // visitors sign in (or create an account) first, then come back here.
+  const needsStudentSignIn = /^\/student\/(talk(\/|$)|sessions\/.+)/.test(pathname);
+
   // Protect Student Routes (account pages: requests, programs, notifications, onboarding …)
-  if (studentRoutes.some(route => pathname.startsWith(route)) && !publicStudentApp) {
-    if (!isAuth) return NextResponse.redirect(new URL("/login", req.url));
+  if (!isAuth && studentRoutes.some(route => pathname.startsWith(route)) && (needsStudentSignIn || !publicStudentApp)) {
+    const login = new URL("/login", req.url);
+    login.searchParams.set("portal", "student");
+    login.searchParams.set("next", pathname + req.nextUrl.search);
+    return NextResponse.redirect(login);
   }
 
   // Redirect authenticated users away from auth pages

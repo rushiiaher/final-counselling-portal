@@ -99,9 +99,18 @@ export async function requestCounsellingAction(input: {
   return { success: true, id: requestId };
 }
 
-/* Mentor Connect booking — sent to the Center as a career request to arrange. */
+/* Mentor Connect booking — goes to the chosen counsellor (or admin if no match). */
 export async function requestMentorAction(input: { mentorName: string; mentorRole: string; slot: string }) {
   if (!input.mentorName || !input.slot) return { success: false, error: "Pick a slot first." };
+  // New students must finish their profile (details + consent) before booking
+  const me = await requireAuth();
+  const account = await prisma.user.findUnique({
+    where: { id: me.id },
+    select: { profileCompleted: true, studentProfile: { select: { id: true } } },
+  });
+  if (!account?.studentProfile || !account.profileCompleted) {
+    return { success: false, needsProfile: true, error: "Please complete your profile before booking." };
+  }
   const description = [
     `Mentor session request with ${input.mentorName} (${input.mentorRole}).`,
     "",
@@ -117,6 +126,40 @@ export async function requestMentorAction(input: { mentorName: string; mentorRol
     urgency: "LOW",
     preferredLanguage: "en",
   });
-  if (res.success) revalidatePath("/student/sessions");
-  return res.success ? { success: true } : { success: false, error: res.error as string };
+  if (!res.success) return { success: false, error: res.error as string };
+  const requestId = (res as any).data.id as string;
+
+  // Mentors are the Center's own counsellors → send the request straight to that
+  // counsellor's "Requests" to accept / decline. If no account matches, it stays with admin.
+  try {
+    const c = await prisma.counsellorProfile.findFirst({
+      where: { deletedAt: null, user: { name: input.mentorName, isActive: true, role: "COUNSELLOR" } },
+      select: { id: true, userId: true },
+    });
+    if (c) {
+      const user = await requireAuth();
+      await prisma.$transaction([
+        prisma.supportRequest.update({ where: { id: requestId }, data: { assignedCounsellorId: c.id } }),
+        prisma.requestAssignment.create({
+          data: { requestId, counsellorId: c.id, assignedById: user.id, status: "PENDING_ACCEPTANCE" },
+        }),
+        prisma.notification.create({
+          data: {
+            userId: c.userId,
+            type: "REQUEST_ASSIGNED",
+            channel: "IN_APP",
+            title: "New mentor session request",
+            body: `A student booked a mentor session with you (${input.slot}).`,
+            metadata: { requestId },
+          },
+        }),
+      ]);
+    }
+  } catch (e) {
+    console.error("Mentor direct assignment failed — request stays with admin", e);
+  }
+
+  revalidatePath("/student/sessions");
+  revalidatePath("/staff/requests");
+  return { success: true };
 }

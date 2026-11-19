@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { createAnonymousSession, sendAnonymousMessage, getSessionMessages } from "@/services/chat.service";
 import { requireAuth } from "@/lib/auth/session";
 import { createAuditLog } from "@/services/audit.service";
@@ -23,7 +25,7 @@ export async function sendMessageAction(token: string, content: string) {
 
     return { success: true, severity: session?.crisisSeverity };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -49,7 +51,7 @@ export async function staffLoadSessionAction(sessionId: string) {
     const data = await getSessionMessages(session.token);
     return { success: true, messages: data.messages, session: data.session };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -69,7 +71,7 @@ export async function staffReplyAction(sessionId: string, content: string) {
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -87,6 +89,6 @@ export async function closeCrisisSessionAction(sessionId: string) {
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

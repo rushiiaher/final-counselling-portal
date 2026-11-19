@@ -3,14 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
-/* Every "Book Session" button on the website goes to the student app's
-   "Talk to a counsellor" flow, which saves a real support request that
-   shows up in the admin's Cases and the chosen counsellor's Requests. */
-export const BOOK_SESSION_HREF = "/student/talk";
+/* Every "Book Session" button on the website opens the student app's home.
+   Anyone can explore the app; when they choose to book ("Talk to a counsellor"),
+   they sign in or create an account first, then fill in the booking.
+   The booking is saved as a real support request that shows up in the chosen
+   counsellor's Requests (or the admin's Cases for "any counsellor"). */
+export const BOOK_SESSION_HREF = "/student/dashboard";
 
-/** Optional pre-selected concern: career | exam | studies | wellbeing | scholarship | personal */
-export function bookSessionHref(concern?: string) {
-  return concern ? `${BOOK_SESSION_HREF}?concern=${encodeURIComponent(concern)}` : BOOK_SESSION_HREF;
+/** The concern is no longer pre-selected: the student picks it inside the app. */
+export function bookSessionHref(_concern?: string) {
+  return BOOK_SESSION_HREF;
 }
 
 export function useBookSession() {

@@ -14,26 +14,29 @@ export default function AuthSplit({
   blurb,
   children,
   active,
+  tall = false,
 }: {
   heading: string;
   blurb: string;
   children: React.ReactNode;
   active?: string | null;
+  /** Long forms (sign-up): keep the brand text at the top instead of centred */
+  tall?: boolean;
 }) {
   return (
     <div className="bg-page px-4 py-8 md:py-14">
       <div className="max-w-[1000px] mx-auto grid md:grid-cols-[1.05fr_1fr] rounded-[22px] overflow-hidden border border-line bg-surface shadow-[0_16px_40px_rgb(11_47_107/0.12)]">
         {/* Brand panel */}
-        <div className="relative overflow-hidden text-white px-7 py-9 md:px-11 md:py-12 bg-[linear-gradient(150deg,#00355F,#0F4C81)] flex flex-col justify-center">
+        <div className={`relative overflow-hidden text-white px-7 py-9 md:px-11 md:py-12 bg-[linear-gradient(150deg,#00355F,#0F4C81)] flex flex-col ${tall ? "justify-start" : "justify-center"}`}>
           <div className="absolute -right-14 -top-14 w-60 h-60 rounded-full bg-white/6" aria-hidden />
           <div className="absolute right-10 -bottom-10 w-40 h-40 rounded-full bg-white/5" aria-hidden />
-          <div className="relative">
+          <div className={`relative ${tall ? "md:sticky md:top-10" : ""}`}>
             <Emblem size={58} light />
             <h2 className="font-display text-[26px] md:text-[30px] font-extrabold tracking-[-0.02em] mt-6 mb-3 text-white">{heading}</h2>
             <p className="text-white/88 text-[14.5px] leading-relaxed max-w-[380px]">{blurb}</p>
 
             <ul className="mt-7 space-y-2.5 hidden sm:block">
-              {PORTALS.map(({ id, icon: Icon, title, sub, color }) => (
+              {PORTALS.filter((p) => (active === "student" ? p.id === "student" : p.id !== "student")).map(({ id, icon: Icon, title, sub, color }) => (
                 <li key={title} className={`flex items-center gap-3 rounded-[14px] px-3.5 py-3 border transition-opacity ${active === id ? "bg-white/16 border-white/40" : "bg-white/8 border-white/14"} ${active && active !== id ? "opacity-55" : ""}`}>
                   <span className="w-10 h-10 rounded-[11px] bg-white/12 grid place-items-center shrink-0">
                     <Icon className="w-5 h-5" style={{ color }} />

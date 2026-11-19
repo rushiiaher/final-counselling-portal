@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import { requireAuth } from "@/lib/auth/session";
 import prisma from "@/lib/prisma";
 
@@ -18,7 +20,7 @@ export async function getAvailabilityAction() {
 
     return { success: true, slots };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -45,7 +47,7 @@ export async function saveAvailabilityAction(slots: {
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -63,6 +65,6 @@ export async function blockDatesAction(startsAt: string, endsAt: string, reason?
 
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

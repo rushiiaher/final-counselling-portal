@@ -35,8 +35,8 @@ export default function LoginPage() {
   const { data: current } = useSession();
   const currentRole = (current?.user as any)?.role as string | undefined;
   const portalCopy = (portal && PORTAL_COPY[portal]) || {
-    heading: "Sign in to your portal",
-    blurb: "One secure sign-in for students, counsellors and the District Administration. You'll be taken to your own portal automatically.",
+    heading: "Staff sign in",
+    blurb: "For Center counsellors and the District Administration. You'll be taken to your own dashboard automatically.",
   };
 
   const onSubmit = async (data: LoginInput) => {
@@ -158,9 +158,15 @@ export default function LoginPage() {
           </button>
         </form>
 
+        {portal === "student" ? (
         <p className="mt-6 text-center text-sm text-ink-2">
           Don't have an account? <Link href={searchParams.get("next") ? `/signup?next=${encodeURIComponent(safeNext(searchParams.get("next"), "/student/dashboard"))}` : "/signup"} className="font-semibold text-navy hover:underline underline-offset-4">Sign up</Link>
         </p>
+        ) : (
+        <p className="mt-6 text-center text-sm text-ink-2">
+          Student? <Link href="/student/dashboard" className="font-semibold text-navy hover:underline underline-offset-4">Open the Student app</Link>. No sign-in is needed to explore it.
+        </p>
+        )}
       </div>
     </AuthSplit>
   );

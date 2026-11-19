@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { InstitutionType } from "@prisma/client";
@@ -24,7 +26,7 @@ export async function getInstitutionsAction(filters?: {
     });
     return { success: true, data: institutions };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -39,7 +41,7 @@ export async function getInstitutionAction(id: string) {
     if (!institution) return { success: false, error: "Institution not found" };
     return { success: true, data: institution };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -73,7 +75,7 @@ export async function createInstitutionAction(data: {
     revalidatePath("/admin/institutions");
     return { success: true, data: institution };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -112,7 +114,7 @@ export async function updateInstitutionAction(
     revalidatePath(`/admin/institutions/${id}`);
     return { success: true, data: institution };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -125,6 +127,6 @@ export async function toggleInstitutionActiveAction(id: string, isActive: boolea
     revalidatePath("/admin/institutions");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

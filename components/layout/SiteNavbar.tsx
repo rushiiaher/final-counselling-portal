@@ -214,7 +214,7 @@ export default function SiteNavbar(_props: { onBookClick?: () => void } = {}) {
               <CalendarCheck className="w-4 h-4" /> Book Session
             </Link>
             <Link href="/login" className="btn btn-primary !min-h-[40px]">
-              <LogIn className="w-4 h-4" /> Login / Register
+              <LogIn className="w-4 h-4" /> Login
             </Link>
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function SiteNavbar(_props: { onBookClick?: () => void } = {}) {
               <CalendarCheck className="w-4 h-4" /> Book Session
             </Link>
             <Link href="/login" onClick={() => setMobileOpen(false)} className="btn btn-primary w-full">
-              <LogIn className="w-4 h-4" /> Login / Register
+              <LogIn className="w-4 h-4" /> Login
             </Link>
           </div>
         </div>

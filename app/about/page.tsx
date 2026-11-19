@@ -66,7 +66,7 @@ export default function AboutPage() {
                 As part of this initiative, we have built the <strong className="text-navy">District Student & Youth Digital Portal</strong> — this very platform you are using right now. It serves as a common digital platform connecting all Higher Secondary Schools, Colleges, students, and the District Administration under one roof.
               </p>
               <p className="text-ink text-body leading-relaxed">
-                Through this portal, students can access free counselling services, explore career guidance, book appointments, attend events, and connect with qualified counsellors — all from the comfort of their homes.
+                Through this portal, students can access free counselling services, explore career guidance, book appointments, and connect with qualified counsellors — all from the comfort of their homes.
               </p>
             </div>
 

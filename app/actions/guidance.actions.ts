@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { encrypt, decrypt } from "@/lib/encryption";
@@ -82,7 +84,7 @@ export async function createGuidanceReportAction(data: {
     revalidatePath("/staff/reports");
     return { success: true, data: report };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -108,7 +110,7 @@ export async function getGuidanceReportsAction(requestId: string) {
 
     return { success: true, data: decrypted };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -135,7 +137,7 @@ export async function getMyCounsellorReportsAction() {
 
     return { success: true, data: decrypted };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -170,7 +172,7 @@ export async function createFollowUpAction(data: {
     revalidatePath(`/staff/cases/${data.requestId}`);
     return { success: true, data: followUp };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -209,7 +211,7 @@ export async function completeFollowUpAction(
     revalidatePath("/staff/follow-ups");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -256,7 +258,7 @@ export async function getMyFollowUpsAction() {
 
     return { success: true, data: categorized };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -300,7 +302,7 @@ export async function createSupportReferralAction(data: {
     revalidatePath(`/staff/cases/${data.requestId}`);
     return { success: true, data: referral };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -323,7 +325,7 @@ export async function getMyReferralsAction() {
 
     return { success: true, data: referrals };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -341,6 +343,6 @@ export async function updateReferralStatusAction(
     revalidatePath("/staff/referrals");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

@@ -5,101 +5,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { THEME, Field, Btn, Chip, Card, Icon, Avatar, inputStyle, selectStyle } from "./ui";
-import { DATA, AI_START, aiAnswer, NSP_URL, tr } from "@/lib/student-app/data";
+import { DATA, AI_START, aiAnswer, tr } from "@/lib/student-app/data";
 import { requestMentorAction } from "@/app/actions/student-app.actions";
 
 const T = THEME;
 
-/* ---------- 1. Scholarship Eligibility Checker ---------- */
-export function EligibilityChecker({ lang }: { lang: string }) {
-  const t = (k: string) => tr(lang, k);
-  const [form, setForm] = useState({ level: "11-12", income: "le2", category: "general", gender: "any", domicile: "yes" });
-  const [results, setResults] = useState<any[] | null>(null);
-  const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
-
-  function check() {
-    const inc = ({ le2: 2, le35: 3.5, le8: 8, gt8: 20 } as Record<string, number>)[form.income];
-    const matched = DATA.SCHOLARSHIPS.filter((s: any) => {
-      if (form.domicile !== "yes" && (s.cat === "jk" || s.id === "pmss")) return false;
-      if (s.id === "nmms" && form.level !== "8") return false;
-      if (s.id === "begum" && form.gender !== "female") return false;
-      if (s.id === "pmss" && inc > 8) return false;
-      if ((s.id === "nmms" || s.id === "begum") && inc > 3.5) return false;
-      if (s.id === "min" && inc > 2) return false;
-      if (s.cat === "minority" && form.category !== "minority") return false;
-      return true;
-    });
-    setResults(matched);
-  }
-
-  const opts = (arr: [string, string][]) => arr.map(([v, l]) => <option key={v} value={v}>{l}</option>);
-
-  return (
-    <div>
-      <p style={{ font: `400 14px ${T.body}`, color: T.inkSoft, margin: "0 0 16px" }}>
-        Answer 5 quick questions to instantly see scholarships you may qualify for.
-      </p>
-      <Field label="Current level">
-        <select style={selectStyle} value={form.level} onChange={(e) => set("level", e.target.value)}>
-          {opts([["8", "Class 8"], ["9-10", "Class 9–10"], ["11-12", "Class 11–12"], ["ug", "Undergraduate"]])}
-        </select>
-      </Field>
-      <Field label="Annual family income">
-        <select style={selectStyle} value={form.income} onChange={(e) => set("income", e.target.value)}>
-          {opts([["le2", "Up to ₹2 lakh"], ["le35", "₹2–3.5 lakh"], ["le8", "₹3.5–8 lakh"], ["gt8", "Above ₹8 lakh"]])}
-        </select>
-      </Field>
-      <Field label="Category">
-        <select style={selectStyle} value={form.category} onChange={(e) => set("category", e.target.value)}>
-          {opts([["general", "General"], ["obc", "OBC"], ["scst", "SC / ST"], ["minority", "Minority"]])}
-        </select>
-      </Field>
-      <div style={{ display: "flex", gap: 12 }}>
-        <div style={{ flex: 1 }}>
-          <Field label="Gender">
-            <select style={selectStyle} value={form.gender} onChange={(e) => set("gender", e.target.value)}>
-              {opts([["any", "Prefer not to say"], ["female", "Female"], ["male", "Male"]])}
-            </select>
-          </Field>
-        </div>
-        <div style={{ flex: 1 }}>
-          <Field label="J&K domicile">
-            <select style={selectStyle} value={form.domicile} onChange={(e) => set("domicile", e.target.value)}>
-              {opts([["yes", "Yes"], ["no", "No"]])}
-            </select>
-          </Field>
-        </div>
-      </div>
-      <Btn full variant="saffron" icon="search" onClick={check}>{t("eligibility")}</Btn>
-
-      {results && (
-        <div style={{ marginTop: 18 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <Icon name={results.length ? "verified" : "info"} size={20} color={results.length ? T.green : T.saffronDeep} fill={1} />
-            <span style={{ font: `700 15px ${T.head}`, color: T.ink }}>
-              {results.length ? `${results.length} scholarship${results.length > 1 ? "s" : ""} matched` : "No exact match — broaden your answers"}
-            </span>
-          </div>
-          {results.map((s) => (
-            <Card key={s.id} pad={14} style={{ marginBottom: 10 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginBottom: 4 }}>
-                <strong style={{ font: `700 15px ${T.head}`, color: T.ink }}>{lang === "ur" ? s.ur : s.en}</strong>
-                <Chip tone="green">{s.amount}</Chip>
-              </div>
-              <p style={{ font: `400 13px ${T.body}`, color: T.inkSoft, margin: "0 0 8px" }}>{s.elig}</p>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ font: `500 12px ${T.body}`, color: T.inkSoft }}>⏱ {t("deadline")}: {s.deadline}</span>
-                <Btn size="sm" variant="light" onClick={() => window.open(NSP_URL, "_blank", "noopener,noreferrer")}>{t("apply")}</Btn>
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ---------- 2. Career Roadmap Generator ---------- */
+/* ---------- 1. Career Roadmap Generator ---------- */
 export function RoadmapGenerator({ lang, preselect }: { lang: string; preselect?: string | null }) {
   const t = (k: string) => tr(lang, k);
   const careers = DATA.CAREERS;
@@ -170,23 +81,28 @@ export function RoadmapGenerator({ lang, preselect }: { lang: string; preselect?
   );
 }
 
-/* ---------- 3. Mentor Booking (saved as a request to the Center) ---------- */
+/* ---------- 2. Mentor Booking (saved as a request to the Center) ---------- */
 export function MentorBooking({ lang, mentor, onConfirm }: { lang: string; mentor: any; onConfirm: (slot: string) => void }) {
   const t = (k: string) => tr(lang, k);
   const [slot, setSlot] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { status } = useSession();
+  const [needsProfile, setNeedsProfile] = useState(false);
+  const { status, data: session } = useSession();
   const isGuest = status === "unauthenticated";
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  const notStudent = !!role && role !== "STUDENT";
 
   async function book() {
     if (!slot || busy) return;
-    if (isGuest) { window.location.href = `/login?portal=student&next=${encodeURIComponent(window.location.pathname)}`; return; }
+    // Not signed in, or signed in as staff: go to the student sign-in and come back here
+    if (isGuest || notStudent) { window.location.href = `/login?portal=student&next=${encodeURIComponent(window.location.pathname)}`; return; }
     setBusy(true); setError(null);
     const res = await requestMentorAction({ mentorName: mentor.en, mentorRole: mentor.role, slot });
     setBusy(false);
     if (res.success) onConfirm(slot);
-    else setError(res.error === "Student profile not found" ? "Please complete your profile first (More → Complete profile)." : res.error || "Could not send request.");
+    else if ((res as { needsProfile?: boolean }).needsProfile || res.error === "Student profile not found") setNeedsProfile(true);
+    else setError(res.error || "Could not send request.");
   }
 
   return (
@@ -202,6 +118,18 @@ export function MentorBooking({ lang, mentor, onConfirm }: { lang: string; mento
           </div>
         </div>
       </div>
+      {(isGuest || notStudent) ? (
+        <div style={{ textAlign: "center" }}>
+          <p style={{ font: `400 13px ${T.body}`, color: T.inkSoft, margin: "0 0 12px", lineHeight: 1.5 }}>
+            {isGuest
+              ? "Sign in or create a free student account to book this mentor. You'll come straight back here."
+              : `You're signed in as a ${role === "COUNSELLOR" ? "counsellor" : role === "ADMIN" ? "District Admin" : "staff member"}. Mentor sessions are booked from a student account.`}
+          </p>
+          <Btn full variant="saffron" icon="login" onClick={() => { window.location.href = `/login?portal=student&next=${encodeURIComponent(window.location.pathname)}`; }}>
+            {isGuest ? "Sign in to book" : "Sign in as a student to book"}
+          </Btn>
+        </div>
+      ) : (<>
       <div style={{ font: `600 13px ${T.body}`, color: T.ink, marginBottom: 8 }}>Pick a slot</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 18 }}>
         {mentor.slots.map((s: string) => (
@@ -218,15 +146,22 @@ export function MentorBooking({ lang, mentor, onConfirm }: { lang: string; mento
         ))}
       </div>
       {error && <p role="alert" style={{ font: `500 13px ${T.body}`, color: "#b91c1c", margin: "0 0 10px" }}>{error}</p>}
+      {needsProfile ? (
+        <div role="alert" style={{ textAlign: "center" }}>
+          <p style={{ font: `500 13.5px ${T.body}`, color: T.ink, margin: "0 0 10px" }}>One more step: add a few details about yourself, then book this session.</p>
+          <Btn full variant="saffron" icon="person" onClick={() => { window.location.href = `/student/onboarding/step-1?next=${encodeURIComponent(window.location.pathname)}`; }}>Complete your profile</Btn>
+        </div>
+      ) : (
       <Btn full variant="saffron" icon="event_available" onClick={book} disabled={!slot || busy}>
-        {busy ? "Sending…" : isGuest ? "Sign in to book" : <>{t("book")}{slot ? ` · ${slot}` : ""}</>}
+        {busy ? "Sending…" : <>{t("book")}{slot ? ` · ${slot}` : ""}</>}
       </Btn>
-      {isGuest && <p style={{ font: `400 12px ${T.body}`, color: T.inkSoft, textAlign: "center", margin: "10px 0 0" }}>Free account needed so the Center can confirm with you.</p>}
+      )}
+      </>)}
     </div>
   );
 }
 
-/* ---------- 4. AI Career Counselor ---------- */
+/* ---------- 3. AI Career Counselor ---------- */
 export function AICounselor() {
   const [msgs, setMsgs] = useState<{ who: "ai" | "me"; text: string }[]>([{ who: "ai", text: AI_START.q }]);
   const [chips, setChips] = useState<string[]>(AI_START.chips);

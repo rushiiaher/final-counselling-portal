@@ -10,8 +10,8 @@ import {
   THEME, Icon, Card, Chip, Btn, Photo, Avatar, SectionHead, Page, HScroll, SecIntro, FilterRow, blkH, chipBtn,
 } from "./ui";
 import { useStudentApp } from "./AppContext";
-import { DATA, NSP_URL } from "@/lib/student-app/data";
-import { EligibilityChecker, RoadmapGenerator } from "./features";
+import { DATA } from "@/lib/student-app/data";
+import { RoadmapGenerator } from "./features";
 
 const T = THEME;
 const D = DATA;
@@ -136,23 +136,6 @@ export function HomeScreen() {
         ))}
       </HScroll>
 
-      {/* SCHOLARSHIPS */}
-      <div style={{ marginTop: 26 }}>
-        <SectionHead title={t("scholarTitle")} sub={t("scholarSub")} action={t("viewAll")} onAction={() => nav.go("scholar")} />
-        {D.SCHOLARSHIPS.slice(0, 2).map((s: any) => (
-          <Card key={s.id} pad={14} style={{ marginBottom: 10 }} onClick={() => nav.scholarSheet(s)}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginBottom: 5 }}>
-              <strong style={{ font: `700 14.5px ${T.head}`, color: T.ink }}>{name(s)}</strong>
-              <Chip tone="green">{s.amount}</Chip>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, font: `500 12px ${T.body}`, color: T.inkSoft }}>
-              <Icon name="schedule" size={15} /> {t("deadline")}: {s.deadline}
-            </div>
-          </Card>
-        ))}
-        <Btn full variant="ghost" icon="checklist" onClick={() => nav.go("eligibility")} style={{ marginTop: 4 }}>{t("eligibilityChecker")}</Btn>
-      </div>
-
       {/* EXAMS */}
       <div style={{ marginTop: 26 }}>
         <SectionHead title={t("examTitle")} sub={t("examSub")} action={t("viewAll")} onAction={() => nav.go("exams")} />
@@ -236,9 +219,9 @@ export function HomeScreen() {
 
       {/* FOOTER */}
       <div style={{ marginTop: 28, textAlign: "center", padding: "20px 0 4px" }}>
-        <div style={{ font: `700 14px ${T.head}`, color: T.kashmirBlue }}>{t("appName")}</div>
-        <p style={{ font: `400 11.5px ${T.body}`, color: T.inkSoft, margin: "6px auto 0", maxWidth: 280, lineHeight: 1.5 }}>
-          © 2026 J&amp;K Youth Empowerment &amp; Career Guidance Department. {t("govLine")}
+        <div style={{ font: `700 14px ${T.head}`, color: T.kashmirBlue }}>{t("fullName")}</div>
+        <p style={{ font: `400 11.5px ${T.body}`, color: T.inkSoft, margin: "6px auto 0", maxWidth: 300, lineHeight: 1.5 }}>
+          © 2026 District Administration, Anantnag · Counselling &amp; Youth Development Center
         </p>
       </div>
     </Page>
@@ -316,43 +299,6 @@ export function CareerDetail({ id }: { id: string }) {
       </div>
 
       <Btn full variant="saffron" icon="route" onClick={() => nav.go("roadmap", { preselect: c.id })}>{t("roadmapGen")}</Btn>
-    </Page>
-  );
-}
-
-/* ---------- Scholarships ---------- */
-export function ScholarScreen() {
-  const { t, name, nav, lang } = useStudentApp();
-  const [f, setF] = useState("all");
-  const list = D.SCHOLARSHIPS.filter((s: any) => f === "all" || s.cat === f);
-  return (
-    <Page>
-      <SecIntro title={t("scholarTitle")} sub={t("scholarSub")} />
-      <div role="button" tabIndex={0} onClick={() => nav.go("eligibility")} onKeyDown={(e) => e.key === "Enter" && nav.go("eligibility")} style={{ display: "flex", gap: 12, alignItems: "center", padding: 14, borderRadius: 18, marginBottom: 16, cursor: "pointer", background: `linear-gradient(120deg, ${T.saffron}, #fbbf24)`, color: "#3a2400", boxShadow: "0 8px 22px rgba(245,158,11,0.32)" }}>
-        <Icon name="checklist" size={28} fill={1} />
-        <div style={{ flex: 1 }}>
-          <div style={{ font: `700 15px ${T.head}` }}>{t("eligibilityChecker")}</div>
-          <div style={{ font: `400 12px ${T.body}`, opacity: 0.8 }}>Match in 5 questions</div>
-        </div>
-        <Icon name={lang === "ur" ? "arrow_back" : "arrow_forward"} size={22} />
-      </div>
-      <FilterRow items={D.SCHOLAR_FILTERS} value={f} onChange={setF} lang={lang} />
-      {list.map((s: any) => (
-        <Card key={s.id} pad={15} style={{ marginBottom: 12 }} onClick={() => nav.scholarSheet(s)}>
-          <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginBottom: 6 }}>
-            <strong style={{ font: `700 15px ${T.head}`, color: T.ink }}>{name(s)}</strong>
-            <Chip tone="green">{s.amount}</Chip>
-          </div>
-          <div style={{ font: `500 12px ${T.body}`, color: T.inkSoft, marginBottom: 8 }}>{s.provider}</div>
-          <p style={{ font: `400 13px ${T.body}`, color: T.inkSoft, margin: "0 0 10px", lineHeight: 1.45 }}>{s.elig}</p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 5, font: `600 12px ${T.body}`, color: T.saffronDeep }}><Icon name="schedule" size={15} />{s.deadline}</span>
-            <span onClick={(e) => e.stopPropagation()}>
-              <Btn size="sm" variant="light" onClick={() => window.open(NSP_URL, "_blank", "noopener,noreferrer")}>{t("apply")}</Btn>
-            </span>
-          </div>
-        </Card>
-      ))}
     </Page>
   );
 }
@@ -536,7 +482,6 @@ export function MoreScreen() {
     { icon: "auto_stories", label: t("storiesTitle"), to: "stories" },
     { icon: "emoji_events", label: t("examTitle"), to: "exams" },
     { icon: "route", label: t("roadmapGen"), to: "roadmap" },
-    { icon: "checklist", label: t("eligibilityChecker"), to: "eligibility" },
     { icon: "auto_awesome", label: t("aiCounsel"), action: nav.openAI },
     { icon: "info", label: t("aboutTitle"), to: "about" },
   ];
@@ -559,7 +504,7 @@ export function MoreScreen() {
   );
   return (
     <Page>
-      <SecIntro title={t("more")} sub={t("appName")} />
+      <SecIntro title={t("more")} sub={t("fullName")} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         {items.map((it) => tile(it, it.action || (() => nav.go(it.to!))))}
       </div>
@@ -589,29 +534,111 @@ export function MoreScreen() {
   );
 }
 
+/* About — same content as the website's About Us page (app/about/page.tsx) */
+const ABOUT_ISSUES = [
+  { icon: "warning", text: "No central platform for all students" },
+  { icon: "groups", text: "Limited access to counselling and guidance" },
+  { icon: "hub", text: "Lack of communication between institutions and administration" },
+  { icon: "menu_book", text: "Students missing opportunities due to lack of information" },
+  { icon: "track_changes", text: "No structured system to track student participation and issues" },
+  { icon: "handshake", text: "Alumni not connected with current students" },
+];
+const ABOUT_USERS = [
+  { icon: "school", label: "All students in these institutions", desc: "Students across all 78 Higher Secondary Schools and 10 Colleges in the district" },
+  { icon: "how_to_reg", label: "Alumni", desc: "Former students who can mentor, guide, and stay connected with current students" },
+  { icon: "account_balance", label: "District Administration & Counselling Center", desc: "Officials and counsellors managing student welfare, guidance, and development programs" },
+];
+
 export function AboutScreen() {
-  const { t } = useStudentApp();
+  const { t, nav } = useStudentApp();
+  const para: React.CSSProperties = { font: `400 14.5px ${T.body}`, color: T.ink, lineHeight: 1.65, margin: "0 0 12px" };
+  const label = (txt: string) => (
+    <div style={{ font: `700 11px ${T.body}`, letterSpacing: "0.08em", textTransform: "uppercase", color: T.saffronDeep, margin: "26px 0 4px" }}>{txt}</div>
+  );
+  const h2 = (txt: string) => <h2 style={{ font: `700 19px ${T.head}`, color: T.ink, margin: "0 0 12px", letterSpacing: "-0.01em" }}>{txt}</h2>;
   return (
     <Page>
-      <SecIntro title={t("aboutTitle")} sub={t("appName")} />
+      <SecIntro title={t("aboutTitle")} sub="Counselling and Youth Development Center · Anantnag" />
+
       <Card pad={18}>
-        <p style={{ font: `400 15px ${T.body}`, color: T.ink, lineHeight: 1.6, margin: 0 }}>{t("aboutBody")}</p>
+        <p style={para}>
+          Under the District Administration of Anantnag, we have established a <strong style={{ color: T.navy }}>Counselling and Youth Development Center</strong> to support students in areas such as mental well-being, career guidance, and overall development.
+        </p>
+        <p style={para}>
+          As part of this initiative, we have built the <strong style={{ color: T.navy }}>District Student &amp; Youth Digital Portal</strong>. It serves as a common digital platform connecting all Higher Secondary Schools, Colleges, students, and the District Administration under one roof.
+        </p>
+        <p style={{ ...para, margin: 0 }}>
+          Through this portal, students can access free counselling services, explore career guidance, book appointments, and connect with qualified counsellors, all from the comfort of their homes.
+        </p>
       </Card>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 16 }}>
-        {[["11", "Career paths"], ["9", "Exam hubs"], ["6", "Scholarships"]].map(([n, l]) => (
-          <Card key={l} pad={14} style={{ textAlign: "center" }}>
-            <div style={{ font: `700 26px ${T.head}`, color: T.saffronDeep }}>{n}</div>
-            <div style={{ font: `500 11px ${T.body}`, color: T.inkSoft, marginTop: 2 }}>{l}</div>
+
+      <Card pad={16} style={{ marginTop: 12, background: T.blueSoft, border: "none" }}>
+        <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 6 }}>
+          <Icon name="public" size={22} color={T.navy} />
+          <strong style={{ font: `700 15px ${T.head}`, color: T.ink }}>Our Vision</strong>
+        </div>
+        <p style={{ font: `400 14px ${T.body}`, color: T.inkSoft, lineHeight: 1.6, margin: 0 }}>
+          To create a single digital platform that connects students, institutions, and administration for learning, interaction, counselling, and overall development.
+        </p>
+      </Card>
+
+      {label("Why this portal")}
+      {h2("Need for the portal")}
+      <p style={para}>
+        At present, there is no single system where all students and institutions are connected. Schools and colleges work separately, and students often do not know where to go for help, guidance, or opportunities.
+      </p>
+      <p style={{ ...para, color: T.inkSoft }}>Because of this, many students are not able to get the right support at the right time. Some key issues observed are:</p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
+        {ABOUT_ISSUES.map((i) => (
+          <Card key={i.text} pad={14}>
+            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <span style={{ width: 36, height: 36, borderRadius: 999, background: T.saffronSoft, display: "grid", placeItems: "center", flexShrink: 0 }}>
+                <Icon name={i.icon} size={19} color={T.saffronDeep} />
+              </span>
+              <span style={{ font: `500 13.5px ${T.body}`, color: T.ink, lineHeight: 1.5, paddingTop: 7 }}>{i.text}</span>
+            </div>
           </Card>
         ))}
       </div>
+
+      {label("Our mission")}
+      {h2("Purpose of the portal")}
+      <Card pad={18} style={{ textAlign: "center" }}>
+        <Icon name="target" size={30} color={T.navy} />
+        <p style={{ font: `600 15.5px ${T.head}`, color: T.ink, lineHeight: 1.55, margin: "8px 0 14px" }}>
+          To create a single digital platform that connects students, institutions, and administration for learning, interaction, counselling, and overall development.
+        </p>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center" }}>
+          {["Learning", "Interaction", "Counselling", "Development"].map((x) => <Chip key={x} tone="blue">{x}</Chip>)}
+        </div>
+      </Card>
+
+      {label("Who benefits")}
+      {h2("Target users")}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
+        {ABOUT_USERS.map((u) => (
+          <Card key={u.label} pad={16}>
+            <span style={{ width: 40, height: 40, borderRadius: 999, background: T.blueSoft, display: "grid", placeItems: "center", marginBottom: 10 }}>
+              <Icon name={u.icon} size={21} color={T.navy} />
+            </span>
+            <strong style={{ font: `700 14.5px ${T.head}`, color: T.ink, display: "block", marginBottom: 4 }}>{u.label}</strong>
+            <span style={{ font: `400 13px ${T.body}`, color: T.inkSoft, lineHeight: 1.55 }}>{u.desc}</span>
+          </Card>
+        ))}
+      </div>
+
+      <Card pad={18} style={{ marginTop: 22, textAlign: "center" }}>
+        {h2("Be part of the change")}
+        <p style={{ font: `400 13.5px ${T.body}`, color: T.inkSoft, lineHeight: 1.6, margin: "0 0 14px" }}>
+          Join us in building a connected, supportive ecosystem for the youth of Anantnag. Whether you are a student, parent, teacher, or alumni, this portal is for you.
+        </p>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
+          <Btn variant="saffron" icon="event_available" onClick={() => nav.go("book")}>Book a session</Btn>
+          <Btn variant="ghost" icon="call" onClick={() => { window.location.href = "/contact"; }}>Contact us</Btn>
+        </div>
+      </Card>
     </Page>
   );
-}
-
-export function EligibilityScreen() {
-  const { t, lang } = useStudentApp();
-  return <Page><SecIntro title={t("eligibilityChecker")} sub={t("scholarSub")} /><EligibilityChecker lang={lang} /></Page>;
 }
 
 export function RoadmapScreen({ preselect }: { preselect?: string | null }) {

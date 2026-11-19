@@ -1,5 +1,7 @@
 "use server";
 
+import { userErrorMessage } from "@/lib/user-error";
+
 import prisma from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { ServiceCategory, RequestUrgency, RequestStatus } from "@prisma/client";
@@ -49,7 +51,7 @@ export async function submitSupportRequestAction(data: {
     revalidatePath("/student/requests");
     return { success: true, data: request };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -74,7 +76,7 @@ export async function getMyRequestsAction() {
 
     return { success: true, data: requests };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -111,7 +113,7 @@ export async function getRequestDetailAction(requestId: string) {
 
     return { success: true, data: request };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -156,7 +158,7 @@ export async function getAllRequestsAction(filters?: {
 
     return { success: true, data: requests };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -220,7 +222,7 @@ export async function assignCounsellorAction(requestId: string, counsellorProfil
     revalidatePath("/staff/cases");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -269,7 +271,7 @@ export async function updateRequestStatusAction(requestId: string, status: Reque
     revalidatePath("/staff/cases");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -307,7 +309,7 @@ export async function getMyCasesAction() {
 
     return { success: true, data: cases };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -368,7 +370,7 @@ export async function respondToAssignmentAction(
     revalidatePath("/admin/cases");
     return { success: true };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }
 
@@ -414,6 +416,6 @@ export async function getCounsellorsForAssignmentAction(serviceCategories: Servi
 
     return { success: true, data: sorted };
   } catch (err: any) {
-    return { success: false, error: err.message };
+    return { success: false, error: userErrorMessage(err) };
   }
 }

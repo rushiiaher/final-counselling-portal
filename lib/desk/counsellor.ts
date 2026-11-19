@@ -14,7 +14,7 @@ export type DeskAppt = {
   block: string;
   cls: string;
   phone: string;
-  concern: string;           // career | exam | studies | wellbeing | scholarship | personal
+  concern: string;           // career | exam | studies | wellbeing | personal
   mode: string | null;       // in-person | video | phone
   when: string;              // "Today · 3:00 pm" …
   dateISO: string | null;

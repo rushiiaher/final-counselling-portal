@@ -1,25 +1,24 @@
 /* Student app content — ported verbatim from the new design (data.jsx).
-   Bilingual (English / Urdu) UI strings + careers, scholarships, exams,
+   Bilingual (English / Urdu) UI strings + careers, exams,
    skills, schemes, mentors, success stories and announcements. */
 /* eslint-disable */
 
 // ---- UI / chrome strings -------------------------------------------------
 export const STR: Record<string, Record<string, string>> = {
   en: {
-    govLine: "Government of Jammu & Kashmir · Youth Empowerment & Career Guidance",
-    appName: "JK Career Navigator",
+    govLine: "J&K Administration · District Counselling Center",
+    appName: "Youth Guidance Portal",
+    fullName: "Youth Digital Counselling & Guidance Portal",
     welcome: "Welcome",
     heroTitle: "Find your path,\nSrinagar.",
-    heroSub: "Official guidance on careers, scholarships, exams and skills — built for the youth of Jammu & Kashmir.",
-    searchPh: "Search careers, scholarships, exams…",
+    heroSub: "Official guidance on careers, exams and skills — built for the youth of Jammu & Kashmir.",
+    searchPh: "Search careers, exams, skills…",
     explore: "Explore",
     pathways: "Choose your pathway",
     pathwaysSub: "Tailored for every stage of your journey.",
     quickActions: "Quick access",
     careersTitle: "Career Explorer",
     careersSub: "Discover where your interests can take you.",
-    scholarTitle: "Scholarship Hub",
-    scholarSub: "Funding to keep you learning.",
     examTitle: "Competitive Exams",
     examSub: "Everything you need to crack the big ones.",
     skillsTitle: "Skill Development",
@@ -33,7 +32,6 @@ export const STR: Record<string, Record<string, string>> = {
     newsTitle: "Latest announcements",
     viewAll: "View all",
     seeMore: "See more",
-    eligibility: "Check eligibility",
     roadmap: "Generate roadmap",
     bookMentor: "Book a session",
     aiCounsel: "AI Counselor",
@@ -46,9 +44,7 @@ export const STR: Record<string, Record<string, string>> = {
     counselCta: "Talk to a counsellor",
     counselCtaSub: "Free, confidential guidance · book in-person, video or phone",
     careers: "Careers",
-    scholar: "Scholarships",
     exams: "Exams",
-    eligibilityChecker: "Scholarship Eligibility Checker",
     roadmapGen: "Career Roadmap Generator",
     deadline: "Deadline",
     amount: "Amount",
@@ -71,24 +67,23 @@ export const STR: Record<string, Record<string, string>> = {
     done: "Done",
     filterAll: "All",
     aboutTitle: "About the portal",
-    aboutBody: "An initiative of the J&K Youth Empowerment & Career Guidance Department to give every student in the valley equal access to trusted career, education and skilling guidance.",
+    aboutBody: "An initiative of the District Administration, Anantnag, through its Counselling and Youth Development Center, to give every student equal access to trusted career, education and well-being guidance.",
     langName: "اردو",
   },
   ur: {
-    govLine: "حکومتِ جموں و کشمیر · نوجوانوں کی ترقی و رہنمائی",
-    appName: "جے کے کیریئر نیویگیٹر",
+    govLine: "جموں و کشمیر انتظامیہ · ضلعی کونسلنگ سینٹر",
+    appName: "یوتھ گائیڈنس پورٹل",
+    fullName: "یوتھ ڈیجیٹل کونسلنگ و گائیڈنس پورٹل",
     welcome: "خوش آمدید",
     heroTitle: "اپنی راہ پائیں،\nسرینگر۔",
-    heroSub: "کیریئر، وظائف، امتحانات اور ہنر پر سرکاری رہنمائی — جموں و کشمیر کے نوجوانوں کے لیے۔",
-    searchPh: "کیریئر، وظیفہ، امتحان تلاش کریں…",
+    heroSub: "کیریئر، امتحانات اور ہنر پر سرکاری رہنمائی — جموں و کشمیر کے نوجوانوں کے لیے۔",
+    searchPh: "کیریئر، امتحان، ہنر تلاش کریں…",
     explore: "دریافت کریں",
     pathways: "اپنا راستہ منتخب کریں",
     pathwaysSub: "آپ کے سفر کے ہر مرحلے کے لیے۔",
     quickActions: "فوری رسائی",
     careersTitle: "کیریئر ایکسپلورر",
     careersSub: "جانیں آپ کی دلچسپی آپ کو کہاں لے جا سکتی ہے۔",
-    scholarTitle: "وظائف کا مرکز",
-    scholarSub: "تعلیم جاری رکھنے کے لیے مالی مدد۔",
     examTitle: "مسابقتی امتحانات",
     examSub: "بڑے امتحانات کے لیے مکمل تیاری۔",
     skillsTitle: "ہنر کی ترقی",
@@ -102,7 +97,6 @@ export const STR: Record<string, Record<string, string>> = {
     newsTitle: "تازہ اعلانات",
     viewAll: "سب دیکھیں",
     seeMore: "مزید دیکھیں",
-    eligibility: "اہلیت جانچیں",
     roadmap: "روڈ میپ بنائیں",
     bookMentor: "سیشن بک کریں",
     aiCounsel: "اے آئی کونسلر",
@@ -115,9 +109,7 @@ export const STR: Record<string, Record<string, string>> = {
     counselCta: "کونسلر سے بات کریں",
     counselCtaSub: "مفت، خفیہ رہنمائی · سینٹر، ویڈیو یا فون",
     careers: "کیریئر",
-    scholar: "وظائف",
     exams: "امتحانات",
-    eligibilityChecker: "وظیفہ اہلیت چیکر",
     roadmapGen: "کیریئر روڈ میپ جنریٹر",
     deadline: "آخری تاریخ",
     amount: "رقم",
@@ -140,7 +132,7 @@ export const STR: Record<string, Record<string, string>> = {
     done: "مکمل",
     filterAll: "تمام",
     aboutTitle: "پورٹل کے بارے میں",
-    aboutBody: "جموں و کشمیر کے نوجوانوں کی ترقی و رہنمائی کے محکمے کا ایک اقدام تاکہ وادی کے ہر طالبعلم کو معتبر رہنمائی تک یکساں رسائی ملے۔",
+    aboutBody: "ضلع انتظامیہ اننت ناگ کے کونسلنگ و یوتھ ڈیولپمنٹ سینٹر کا ایک اقدام، تاکہ ہر طالبعلم کو کیریئر، تعلیم اور ذہنی صحت کی معتبر رہنمائی تک یکساں رسائی ملے۔",
     langName: "English",
   },
 };
@@ -160,7 +152,7 @@ export const PATHWAYS: any[] = [
 // ---- Quick actions -------------------------------------------------------
 export const QUICK: any[] = [
   { icon: "explore", en: "Careers", ur: "کیریئر", to: "careers" },
-  { icon: "school", en: "Scholarships", ur: "وظائف", to: "scholar" },
+  { icon: "groups", en: "Mentors", ur: "مینٹرز", to: "mentors" },
   { icon: "trophy", en: "Exams", ur: "امتحانات", to: "exams", mi: "emoji_events" },
   { icon: "rocket_launch", en: "Skills", ur: "ہنر", to: "skills" },
 ];
@@ -178,23 +170,6 @@ export const CAREERS: any[] = [
   { id: "com", icon: "payments", en: "Commerce", ur: "کامرس", tag: "Versatile", desc: "Money, markets & management — CA, finance, business.", pay: "₹4–20 LPA", exams: ["CUET", "CA Foundation"], skills: ["Accounting", "Analysis", "Communication"], roadmap: ["Take Commerce in 11–12", "B.Com / BBA + CA/CS", "Internship (articleship)", "Certifications", "Industry or practice"] },
   { id: "tour", icon: "travel_explore", en: "Tourism & Hospitality", ur: "سیاحت و مہمان نوازی", tag: "Local edge", desc: "Showcase Kashmir — hotels, travel, experiences.", pay: "₹3–12 LPA", exams: ["CUET"], skills: ["Languages", "Service", "Logistics"], roadmap: ["Hospitality diploma / degree", "Local internships", "Specialise (hotel / travel)", "Certifications", "Manage or start your own"] },
   { id: "agri", icon: "agriculture", en: "Agriculture", ur: "زراعت", tag: "Emerging", desc: "Modern farming — horticulture, saffron, food-tech.", pay: "₹3–12 LPA", exams: ["ICAR", "CUET"], skills: ["Science", "Field work", "Agri-tech"], roadmap: ["PCB / PCM in 11–12", "B.Sc Agriculture", "Field & lab training", "Govt / agri-startup", "Specialise (horticulture)"] },
-];
-
-// ---- Scholarships --------------------------------------------------------
-export const SCHOLARSHIPS: any[] = [
-  { id: "pmss", en: "PM Special Scholarship (J&K)", ur: "وزیراعظم خصوصی وظیفہ", provider: "AICTE / MoE", cat: "central", amount: "Up to ₹1.25 L/yr", deadline: "31 Oct 2026", elig: "J&K domicile, Class 12 passed, family income ≤ ₹8 L." },
-  { id: "nmms", en: "National Means-cum-Merit", ur: "قومی میرٹ وظیفہ", provider: "Ministry of Education", cat: "merit", amount: "₹12,000/yr", deadline: "15 Nov 2026", elig: "Class 8 students, income ≤ ₹3.5 L, merit test." },
-  { id: "jkpost", en: "J&K Post-Matric Scholarship", ur: "جے کے پوسٹ میٹرک", provider: "J&K Social Welfare", cat: "jk", amount: "Tuition + ₹1,200/mo", deadline: "30 Sep 2026", elig: "J&K domicile, Class 11+, SC/ST/OBC categories." },
-  { id: "min", en: "Minority Merit Scholarship", ur: "اقلیتی میرٹ وظیفہ", provider: "Ministry of Minority Affairs", cat: "minority", amount: "Up to ₹30,000/yr", deadline: "30 Nov 2026", elig: "Minority community, ≥50% marks, income ≤ ₹2 L." },
-  { id: "begum", en: "Begum Hazrat Mahal (Girls)", ur: "بیگم حضرت محل (لڑکیاں)", provider: "Maulana Azad Foundation", cat: "minority", amount: "₹5,000–6,000/yr", deadline: "31 Dec 2026", elig: "Girls, Class 9–12, minority, income ≤ ₹2 L." },
-  { id: "merit", en: "J&K Merit Scholarship", ur: "جے کے میرٹ وظیفہ", provider: "J&K Higher Education", cat: "merit", amount: "₹10,000/yr", deadline: "20 Oct 2026", elig: "Top 10% in board exams, any stream." },
-];
-export const SCHOLAR_FILTERS: any[] = [
-  { id: "all", en: "All", ur: "تمام" },
-  { id: "central", en: "Central", ur: "مرکزی" },
-  { id: "jk", en: "J&K", ur: "جے کے" },
-  { id: "minority", en: "Minority", ur: "اقلیتی" },
-  { id: "merit", en: "Merit", ur: "میرٹ" },
 ];
 
 // ---- Exams ---------------------------------------------------------------
@@ -228,7 +203,6 @@ export const SCHEMES: any[] = [
   { id: "tejaswini", en: "Tejaswini (Women)", ur: "تیجسوِنی (خواتین)", cat: ["women", "startup"], desc: "Economic empowerment for young women — loans and enterprise support." },
   { id: "pmkisan", en: "Stand-Up India", ur: "اسٹینڈ اپ انڈیا", cat: ["startup", "women"], desc: "Bank loans ₹10 L–₹1 Cr for women & SC/ST first-time entrepreneurs." },
   { id: "umeed", en: "UMEED (J&K)", ur: "امید (جے کے)", cat: ["women", "skill"], desc: "Self-help groups & livelihood for rural women across the valley." },
-  { id: "nsp", en: "National Scholarship Portal", ur: "قومی اسکالرشپ پورٹل", cat: ["student", "graduate"], desc: "Single window to apply for 100+ central & state scholarships." },
 ];
 export const SCHEME_FILTERS: any[] = [
   { id: "all", en: "All", ur: "تمام" },
@@ -240,18 +214,23 @@ export const SCHEME_FILTERS: any[] = [
 ];
 
 // ---- Mentors -------------------------------------------------------------
+// Same counsellors as the website's "Find a Counsellor" page (app/counselors/page.tsx).
+// Booking a mentor sends the request straight to that counsellor's dashboard.
 export const MENTORS: any[] = [
-  { id: "m1", en: "Dr. Ayesha Khan", ur: "ڈاکٹر عائشہ خان", role: "IAS Officer (2019)", expertise: "UPSC · Civil Services", district: "Srinagar", rating: 4.9, slots: ["Today 5:00 PM", "Tomorrow 11:00 AM", "Sat 4:00 PM"], init: "AK" },
-  { id: "m2", en: "Bilal Ahmad", ur: "بلال احمد", role: "Software Engineer, Bengaluru", expertise: "IT & AI · Engineering", district: "Baramulla", rating: 4.8, slots: ["Tomorrow 6:00 PM", "Sun 2:00 PM"], init: "BA" },
-  { id: "m3", en: "Dr. Mehak Jan", ur: "ڈاکٹر مہک جان", role: "MBBS, GMC Srinagar", expertise: "NEET · Medical", district: "Anantnag", rating: 5.0, slots: ["Today 7:00 PM", "Fri 5:30 PM"], init: "MJ" },
-  { id: "m4", en: "Yusuf Dar", ur: "یوسف ڈار", role: "Founder, Pashmina startup", expertise: "Entrepreneurship", district: "Budgam", rating: 4.7, slots: ["Tomorrow 1:00 PM", "Mon 3:00 PM"], init: "YD" },
-  { id: "m5", en: "Sana Mir", ur: "ثنا میر", role: "Bank PO (SBI)", expertise: "Banking · SSC", district: "Ganderbal", rating: 4.8, slots: ["Today 6:30 PM", "Sat 12:00 PM"], init: "SM" },
+  { id: "m1", en: "Dr. Aamir Wani", ur: "ڈاکٹر عامر وانی", role: "Ph.D. Psychology · 15 yrs", expertise: "Career · Mental Wellness", district: "Srinagar", rating: 5, slots: ["Today 5:00 PM", "Tomorrow 11:00 AM", "Fri 4:00 PM"], init: "AW" },
+  { id: "m2", en: "Mr. Tariq Ahmed Lone", ur: "جناب طارق احمد لون", role: "M.A. Counselling Psychology · 10 yrs", expertise: "Youth · Family", district: "Baramulla", rating: 5, slots: ["Tomorrow 6:00 PM", "Sat 2:00 PM"], init: "TL" },
+  { id: "m3", en: "Dr. Nighat Bhat", ur: "ڈاکٹر نگہت بھٹ", role: "Ph.D. Educational Psychology · 18 yrs", expertise: "Education · Academic Stress", district: "Anantnag", rating: 5, slots: ["Today 7:00 PM", "Fri 5:30 PM"], init: "NB" },
+  { id: "m4", en: "Ms. Iqra Mir", ur: "محترمہ اقرا میر", role: "M.Sc. Clinical Psychology · 8 yrs", expertise: "Personal · Self-Esteem", district: "Budgam", rating: 4, slots: ["Tomorrow 1:00 PM", "Sat 3:00 PM"], init: "IM" },
+  { id: "m5", en: "Dr. Mudasir Khan", ur: "ڈاکٹر مدثر خان", role: "Ph.D. Counselling · 20 yrs", expertise: "Career · Entrepreneurship", district: "Pulwama", rating: 5, slots: ["Today 6:30 PM", "Mon 12:00 PM"], init: "MK" },
+  { id: "m6", en: "Ms. Sana Malik", ur: "محترمہ ثنا ملک", role: "M.A. Psychology, B.Ed. · 12 yrs", expertise: "Education · Study Skills", district: "Kupwara", rating: 4, slots: ["Tomorrow 10:00 AM", "Sat 11:00 AM"], init: "SM" },
+  { id: "m7", en: "Dr. Imran Dar", ur: "ڈاکٹر عمران ڈار", role: "Ph.D. Clinical Psychology · 14 yrs", expertise: "Mental Wellness · Stress", district: "Jammu", rating: 5, slots: ["Today 4:00 PM", "Thu 3:00 PM"], init: "ID" },
+  { id: "m8", en: "Ms. Farida Sheikh", ur: "محترمہ فریدہ شیخ", role: "M.Sc. Psychology, RCI Certified · 9 yrs", expertise: "Family · Women Empowerment", district: "Kathua", rating: 4, slots: ["Tomorrow 12:00 PM", "Sat 4:30 PM"], init: "FS" },
 ];
 
 // ---- Success stories -----------------------------------------------------
 export const STORIES: any[] = [
   { id: "s1", en: "Iqra Bashir", ur: "اقرا بشیر", district: "Srinagar", achievement: "Cleared NEET, now at GMC", quote: "The roadmap broke a scary exam into small weekly wins.", init: "IB" },
-  { id: "s2", en: "Faisal Lone", ur: "فیصل لون", district: "Baramulla", achievement: "B.Tech via JEE + PMSS scholarship", quote: "I found a scholarship I didn't know I was eligible for.", init: "FL" },
+  { id: "s2", en: "Faisal Lone", ur: "فیصل لون", district: "Baramulla", achievement: "B.Tech via JEE", quote: "Counselling helped me pick the right engineering branch.", init: "FL" },
   { id: "s3", en: "Rukhsar Jan", ur: "رخسار جان", district: "Anantnag", achievement: "Selected as J&K Bank PO", quote: "My mentor's mock interviews made all the difference.", init: "RJ" },
   { id: "s4", en: "Adil Wani", ur: "عادل وانی", district: "Budgam", achievement: "Runs a handicraft export brand", quote: "Mission YUVA gave my Pashmina idea its first push.", init: "AW" },
   { id: "s5", en: "Hina Qadri", ur: "حنا قادری", district: "Ganderbal", achievement: "Cloud certified, hired remotely", quote: "Free skill training opened a global job from the valley.", init: "HQ" },
@@ -259,14 +238,13 @@ export const STORIES: any[] = [
 
 // ---- Announcements -------------------------------------------------------
 export const NEWS: any[] = [
-  { id: "n1", tag: "Scholarship", en: "PMSS 2026 applications now open", ur: "پی ایم ایس ایس ۲۰۲۶ کی درخواستیں کھل گئیں", date: "12 Jun 2026" },
   { id: "n2", tag: "Exam", en: "JKPSC prelims date announced", ur: "جے کے پی ایس سی پری لمز کی تاریخ کا اعلان", date: "08 Jun 2026" },
   { id: "n3", tag: "Skills", en: "New AI bootcamp seats at NIELIT", ur: "نیلیٹ میں نئے اے آئی بوٹ کیمپ نشستیں", date: "03 Jun 2026" },
   { id: "n4", tag: "Event", en: "Career fair in Srinagar — 25 June", ur: "سرینگر میں کیریئر میلہ — ۲۵ جون", date: "01 Jun 2026" },
 ];
 
 
-export const DATA = { PATHWAYS, QUICK, CAREERS, SCHOLARSHIPS, SCHOLAR_FILTERS, EXAMS, SKILLS, SCHEMES, SCHEME_FILTERS, MENTORS, STORIES, NEWS };
+export const DATA = { PATHWAYS, QUICK, CAREERS, EXAMS, SKILLS, SCHEMES, SCHEME_FILTERS, MENTORS, STORIES, NEWS };
 
 // ---- Counselling reference data (design: portal-store.jsx) ---------------
 export const CONCERNS = [
@@ -274,7 +252,6 @@ export const CONCERNS = [
   { id: "exam", en: "Exam stress", icon: "menu_book", color: "#b45309", category: "MENTAL_WELLNESS" },
   { id: "studies", en: "Academics / studies", icon: "school", color: "#0e7490", category: "EDUCATIONAL_GUIDANCE" },
   { id: "wellbeing", en: "Mental well-being", icon: "favorite", color: "#be185d", category: "MENTAL_WELLNESS" },
-  { id: "scholarship", en: "Scholarship / financial", icon: "payments", color: "#067a55", category: "EDUCATIONAL_GUIDANCE" },
   { id: "personal", en: "Personal / family", icon: "diversity_3", color: "#6d28d9", category: "PERSONAL_COUNSELLING" },
 ] as const;
 
@@ -287,7 +264,7 @@ export const MODES = [
 /* Which bookable concerns a counsellor's service categories cover */
 export const CATEGORY_TO_CONCERNS: Record<string, string[]> = {
   CAREER_COUNSELLING: ["career"],
-  EDUCATIONAL_GUIDANCE: ["studies", "scholarship"],
+  EDUCATIONAL_GUIDANCE: ["studies"],
   MENTAL_WELLNESS: ["wellbeing", "exam"],
   PERSONAL_COUNSELLING: ["personal"],
   FAMILY_COUNSELLING: ["personal"],
@@ -299,19 +276,16 @@ export const CATEGORY_TO_CONCERNS: Record<string, string[]> = {
 // ---- AI career counsellor (design: features.jsx) --------------------------
 export const AI_START = {
   q: "Hi! I'm your AI Career Counselor. What's on your mind?",
-  chips: ["I'm in Class 10, what stream?", "Which exam for govt job?", "Scholarships for me?", "Suggest a career"],
+  chips: ["I'm in Class 10, what stream?", "Which exam for govt job?", "How do I prepare for NEET or JEE?", "Suggest a career"],
 };
 const AI_REPLIES = [
   { m: /stream|class 10|class 9/i, a: "Great question! Pick your stream by interest + strength:\n• Love math & building? → Science (PCM) → Engineering / IT.\n• Love biology & helping? → Science (PCB) → Medical.\n• Love money & business? → Commerce → CA / management.\n• Love people & ideas? → Arts → Civil services / law / design.\nTry the Career Roadmap Generator to see the full path.", chips: ["Suggest a career", "Which exam for govt job?"] },
-  { m: /govt|government|sarkari/i, a: "For government jobs, the main routes are:\n• UPSC — IAS/IPS (national, toughest).\n• JKPSC — J&K state services.\n• SSC CGL — central ministries.\n• Banking (IBPS/SBI) — PO & clerk.\nMost need a graduate degree. Open the Exams hub for syllabus + a prep roadmap.", chips: ["Scholarships for me?", "I'm in Class 10, what stream?"] },
-  { m: /scholarship|fund|money|fees/i, a: "There's likely funding for you! Key ones for J&K students:\n• PM Special Scholarship (PMSS) — up to ₹1.25 L/yr.\n• J&K Post-Matric — tuition + stipend.\n• Minority & Begum Hazrat Mahal (for girls).\nRun the Scholarship Eligibility Checker — it matches you in 5 questions.", chips: ["Suggest a career", "Which exam for govt job?"] },
-  { m: /career|suggest|confused|what should/i, a: "Tell me what energises you and I'll point you somewhere:\n• Tech & problem-solving → IT & AI or Engineering.\n• Caring for people → Medical or teaching.\n• Kashmir's strengths → Tourism, Handicrafts, Agriculture.\n• Building something of your own → Entrepreneurship (Mission YUVA).\nExplore all 11 paths in the Career Explorer.", chips: ["Scholarships for me?", "Which exam for govt job?"] },
+  { m: /govt|government|sarkari/i, a: "For government jobs, the main routes are:\n• UPSC — IAS/IPS (national, toughest).\n• JKPSC — J&K state services.\n• SSC CGL — central ministries.\n• Banking (IBPS/SBI) — PO & clerk.\nMost need a graduate degree. Open the Exams hub for syllabus + a prep roadmap.", chips: ["How do I prepare for NEET or JEE?", "I'm in Class 10, what stream?"] },
+  { m: /neet|jee|cuet|entrance|prepare|preparation/i, a: "For entrance exams, a steady plan beats last-minute cramming:\n• NEET (medical) and JEE (engineering) are built on Class 11–12 NCERT — master those first.\n• CUET opens central universities in every stream.\n• Practise previous years' papers and take a full mock test every week.\nOpen the Exams hub for each syllabus and a step-by-step prep roadmap.", chips: ["Suggest a career", "Which exam for govt job?"] },
+  { m: /career|suggest|confused|what should/i, a: "Tell me what energises you and I'll point you somewhere:\n• Tech & problem-solving → IT & AI or Engineering.\n• Caring for people → Medical or teaching.\n• Kashmir's strengths → Tourism, Handicrafts, Agriculture.\n• Building something of your own → Entrepreneurship (Mission YUVA).\nExplore all 11 paths in the Career Explorer.", chips: ["How do I prepare for NEET or JEE?", "Which exam for govt job?"] },
 ];
 export function aiAnswer(text: string): { a: string; chips: string[] } {
   const hit = AI_REPLIES.find((r) => r.m.test(text));
   if (hit) return hit;
-  return { a: "Good question. I can help most with choosing a stream, picking competitive exams, finding scholarships, and mapping a career path. Try one of these — or explore the hubs from the menu.", chips: ["I'm in Class 10, what stream?", "Scholarships for me?", "Suggest a career"] };
+  return { a: "Good question. I can help most with choosing a stream, picking competitive exams, preparing for entrance exams, and mapping a career path. Try one of these — or explore the hubs from the menu.", chips: ["I'm in Class 10, what stream?", "How do I prepare for NEET or JEE?", "Suggest a career"] };
 }
-
-/* Official National Scholarship Portal — where "Apply now" sends students */
-export const NSP_URL = "https://scholarships.gov.in";

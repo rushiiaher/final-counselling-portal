@@ -82,9 +82,9 @@ export default function HomePage() {
                   </svg>
                 ),
                 title: 'Educational Guidance',
-                desc: 'Academic support, scholarship guidance, higher education planning, and study skill coaching from class 11 through PG.',
+                desc: 'Academic support, higher education planning, and study skill coaching from class 11 through PG.',
                 tags: [
-                  { label: 'Scholarships' },
+                  { label: 'Higher Education' },
                   { label: 'Study Skills' },
                 ],
               },

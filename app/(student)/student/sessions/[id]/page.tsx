@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
-import { requireAuth } from "@/lib/auth/session";
+import { notFound, redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/session";
 import prisma from "@/lib/prisma";
 import { SessionDetail } from "@/components/student-app/counselling";
 import { parseDescription, type SessionView } from "@/lib/student-app/sessions";
@@ -7,8 +7,10 @@ import { parseDescription, type SessionView } from "@/lib/student-app/sessions";
 export const dynamic = "force-dynamic";
 
 export default async function SessionDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await requireAuth();
   const { id } = await params;
+  const user = await getCurrentUser();
+  if (!user) redirect(`/login?portal=student&next=${encodeURIComponent(`/student/sessions/${id}`)}`);
+  const session = user as { id: string };
   const profile = await prisma.studentProfile.findUnique({ where: { userId: session.id }, select: { id: true } });
   if (!profile) notFound();
 
